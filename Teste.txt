@@ -1,0 +1,1142 @@
+select * from emp
+where deptno = 10
+order by empno;
+
+select * from emp
+where deptno = 10
+order by empno;
+
+create table dept
+(num_solic int(10) not null,
+dat_emiss date,
+dat_previsao date,
+deptno int(02));
+
+select * from dept
+where deptno = 10
+order by empno;
+
+CREATE TABLE DEPT2(
+EMPNO INT(4),
+NOME VARCHAR(30),
+JOB VARCHAR(30),
+MGR_HIREDATE VARCHAR(14),
+COMM INT(4),
+DEPTNO INT(2)
+);
+
+INSERT INTO DEPT2(EMPNO,NOME,JOB,MGR_HIREDATE,COMM,DEPTNO) VALUES('7782','CLARK','MANAGER','7839 09-JUN-81',10);
+INSERT INTO DEPT2(EMPNO,NOME,JOB,MGR_HIREDATE,COMM,DEPTNO) VALUES('7839','KING','PRESIDENT','17-NOV-81 5000',10);
+INSERT INTO DEPT2(EMPNO,NOME,JOB,MGR_HIREDATE,COMM,DEPTNO) VALUES('7934','MILLER','CLERK','7782 23-JAN-82',10);
+
+
+7782 CLARK MANAGER 7839 09-JUN-81 2450 10
+
+7839 KING PRESIDENT 17-NOV-81 5000                 10
+
+7934 MILLER CLERK 7782 23-JAN-82 1300                  10
+
+select * from DEPT2
+where deptno = 10
+order by empno;
+
+select a.deptno, a.dname from dept2 a
+where exists (select 1 from solic_compra b
+where b.deptno = a.deptno);
+
+select * from DEPT2
+where ((job = ‘CLARK’ and sal > 1000)
+or (job = ‘ANALYST’ and sal > 2000));
+
+select num_solic, to_char(dat_emiss, 'dd/mm/yyyy')
+from solic_compra;
+
+INSERT INTO solic_comra(EMPNO,NOME,JOB,MGR_HIREDATE,COMM,DEPTNO) VALUES('7782','CLARK','MANAGER','7839 09-JUN-81',10);
+INSERT INTO solic_comra(EMPNO,NOME,JOB,MGR_HIREDATE,COMM,DEPTNO) VALUES('7839','KING','PRESIDENT','17-NOV-81 5000',10);
+INSERT INTO solic_comra(EMPNO,NOME,JOB,MGR_HIREDATE,COMM,DEPTNO) VALUES('7934','MILLER','CLERK','7782 23-JAN-82',10);
+
+INSERT INTO solic_comra(to_char(dat_emiss, 'dd/mm/yyyy'));
+
+ALTER TABLE SOLIC_COMPRA ADD to_char(dat_emiss, 'dd/mm/yyyy')
+
+select dept, to_char(dat_emiss, 'dd/mm/yyyy')
+from solic_compra;
+
+ALTER TABLE SOLIC_COMPRA ADD dat_emiss date DEFAULT CURRENT_DATE;
+
+DROP TABLE SOLIC_COMPRA;
+
+ALTER TABLE SOLIC_COMPRA ADD Data date;
+
+select num_solic
+from solic_compra;
+
+select depno, to_char(sal,'999,999.99')
+from emp where empno = 7499;
+
+create table produto
+cod_produto int(7), not null primary key,
+dsc_produto varchar2(30), not null,
+dsc_unidade varchar2(10), not null;
+
+create table pedido
+
+(num_pedido int(7) not null constraint pedido_pk primary key,
+cod_fornec int(7) not null,
+dat_emiss date not null,
+dat_entreg date not null);
+
+create table pedidos (
+id int not null primary key,
+fornecedor_id int not null,
+data_emissao date not null default DATE,
+data_entrega date not null default DATE
+);
+
+create table pedido
+(num_pedido int(7) not null primary key,
+cod_fornec int(7) references fornecedor(cod_fornec),
+dat_emiss date not null,
+dat_entreg date not null);
+
+create table pedido2
+(num_pedido2 int(7) not null primary key,
+cod_fornec int(7) not null,
+dat_emiss date not null,
+dat_entreg date not null,
+constraint pedido2_fornec_fk foreign key (cod_fornec)
+references fornecedor(cod_fornec));
+
+create table pedidos2 (
+  id int not null primary key,
+  fornecedor_id int not null,
+  data_emissao date not null,
+  data_entrega date not null,
+  constraint pedido_fornec_fk foreign key (pedido_id)
+  references pedido(id));
+  
+create table pedido2
+(num_pedido int(7) not null primary key,
+cod_fornec int(7) not null,
+dat_emiss date not null,
+dat_entreg date not null,          
+constraint dat_entreg_ck
+check (dat_entreg between dat_emiss and dat_emiss + 5));
+
+insert into solic_compra (num_solic,dat_emiss,dat_previsao,deptno) 
+values(7,current_date,current_date + 15,1);
+
+insert into solic_compra (num_solic,dat_emiss,dat_previsao,deptno) 
+values(8,current_date + 1,current_date + 12,3);
+
+insert into solic_compra(num_solic,dat_emiss,dat_previsao,
+deptno) values(9,current_date + 2,current_date + 10,6);
+
+savepoint um;
+
+insert into solic_compra(num_solic,dat_emiss,dat_previsao,
+deptno) values(1,current_date,current_date + 15,10);
+
+select solic_compra,
+num_solic from solic_compra,
+where dept.deptno = dept.deptno
+order by num_solic, dat_emiss;
+
+insert into solic_compra(dept) values(4);
+
+select dept2,
+nome from dept2,
+comm where job = deptno
+order by job, nome;
+
+insert into dept2 values(12, null, sysdate, sysdate + 30);
+
+
+
+
+
+
+
+CREATE TABLE departamento (
+  cod_depto INT(7) not null,
+  dsc_departamento CHAR(30) not null,
+  PRIMARY KEY (cod_depto)
+);
+
+
+
+CREATE TABLE produto
+  cod_produto INT(7) not null,
+  dsc_produto CHAR(30) not null,
+  dsc_unidade CHAR(10) not null,
+  vlr_unit INT(12,02) not null,
+  constraint produto_pk primary key (cod_produto);
+  
+CREATE TABLE produto (
+  cod_produto INT NOT NULL,
+  dsc_produto CHAR(30) NOT NULL,
+  dsc_unidade CHAR(10) NOT NULL,
+  vlr_unit DECIMAL(12,2) NOT NULL,
+  PRIMARY KEY (cod_produto)
+);
+
+CREATE TABLE fornecedor (
+  cod_fornec INT NOT NULL,
+  dsc_razao_social CHAR(40) NOT NULL,
+  num_cgc CHAR(15) NOT NULL,
+  num_cep INT NOT NULL,
+  cod_cidade INT NOT NULL,
+  dsc_endereco CHAR(40) NOT NULL,
+  cod_tipo_fornec CHAR(1),
+  tipo_fornec CHAR(5),
+  num_ins_est INT NOT NULL,
+  num_fone CHAR(13),
+  num_fax CHAR(11),
+  num_telex CHAR(11),
+  nom_contato CHAR(30),
+  dat_nasc_contato DATE,
+  PRIMARY KEY (cod_fornec)
+);
+
+CREATE TABLE solicitacao_compra (
+  num_solic INT NOT NULL,
+  cod_depto INT NOT NULL,
+  dat_emiss DATE NOT NULL,
+  dat_previsao DATE NOT NULL,
+  PRIMARY KEY (num_solic),
+  CONSTRAINT solicitacao_compra_depto_fk FOREIGN KEY (cod_depto) REFERENCES departamento (cod_depto)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE pedido (
+  num_pedido int(7) not null,
+  cod_fornec int(7) not null,
+  dat_emiss date not null,
+  dat_entreg date not null,
+  constraint pedido_pk primary key (num_pedido),
+  constraint pedido_fornec_fk foreign key (cod_fornec)
+  references fornecedor (cod_fornec));
+
+CREATE TABLE item_solicitacao (
+  num_solic INT NOT NULL,
+  cod_produto INT NOT NULL,
+  qtd_solic INT NOT NULL,
+  PRIMARY KEY (num_solic, cod_produto),
+  CONSTRAINT item_solicitacao_produto_fk FOREIGN KEY (cod_produto) REFERENCES produto (cod_produto)
+    ON DELETE CASCADE,
+  CONSTRAINT item_solicitacao_solic_fk FOREIGN KEY (num_solic) REFERENCES solicitacao_compra (num_solic)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE item_pedido (
+  num_solic INT NOT NULL,
+  cod_produto INT NOT NULL,
+  num_pedido INT NOT NULL,
+  qtd_pedido INT NOT NULL,
+  vlr_unit DECIMAL(7,2) NOT NULL,
+  PRIMARY KEY (num_solic, cod_produto, num_pedido),
+  CONSTRAINT item_pedido_item_solicitacao_fk FOREIGN KEY (num_solic, cod_produto) REFERENCES item_solicitacao (num_solic, cod_produto)
+    ON DELETE CASCADE,
+  CONSTRAINT item_pedido_pedido_fk FOREIGN KEY (num_pedido) REFERENCES pedido (num_pedido)
+    ON DELETE CASCADE
+);
+
+insert into solic_compra(num_solic,dat_emiss,dat_previsao,
+deptno) values(1,current_date,current_date + 15,10);
+
+select * from produto where cod_produto = 5;
+
+select COUNT(*) from produto where cod_produto = 3;
+
+select * from produto where dsc_unidade > 5;
+
+select cod_produto
+from produto
+where vlr_unit = 'N';
+
+select cod_produto
+from produto
+where cod_produto is null;
+
+select cod_depto
+from departamento
+where cod_depto in (3, 4, 7);
+
+select num_pedido
+from pedido
+where dat_emiss in (1997);
+
+select dsc_razao_social
+from fornecedor
+where
+dsc_razao_social like '%err%';
+
+select cod_produto
+from produto
+
+INSERT INTO produto (cod_produto, dsc_produto, dsc_unidade, vlr_unit)
+VALUES (14, 'computador', 'pc', 10);
+
+select 
+num_solic
+from solicitacao_compra
+group by
+cod_depto
+having
+num_solic > 0;
+
+select dsc_produto
+from produto
+where
+dsc_produto like '%lata%';
+and preco between 1.00 and 999.99;
+
+select dsc_produto
+from produto
+where
+preco between 1.00 and 50.00;
+
+
+
+
+
+
+
+  
+  
+ 
+  
+
+
+ALTER TABLE departamento ADD Administracao varchar(255);
+
+ALTER TABLE departamento ADD Informatica varchar(255);
+ALTER TABLE departamento ADD Recursos_Humanos varchar(255);
+ALTER TABLE departamento ADD Producao varchar(255);
+ALTER TABLE departamento ADD Compras varchar(255);
+ALTER TABLE departamento ADD Vendas varchar(255);
+ALTER TABLE departamento ADD Marketing varchar(255);
+
+insert into departamento ('Administracao') values('1');
+
+insert into departamento values (2,'Informática');
+
+insert into departamento values (3,'Recursos Humanos');
+
+insert into departamento values (4,'Produção');
+
+insert into departamento values (5,'Compras');
+
+insert into departamento values (6,'Vendas');
+
+insert into departamento values (7,'Marketing');
+
+insert into produto values (1,'Parafuso','Unidade',.10);
+
+insert into produto values (2,'Martelo','Unidade',1.99);
+
+insert into produto values (3,'Graxa','Lata',.30);
+
+insert into produto values (4,'Furadeira Bosch','Unidade',75.60);
+
+insert into produto values (10,'Esquadro',null,15);
+
+insert into produto values (11,'Alicate','Unidade',3);
+
+insert into produto values (12,'Betoneira','Unidade',150);
+
+insert into produto values (5,'Chave de Fenda','Unidade',1.4);
+
+insert into produto values (6,'Cano de PVC','Metro',0.90);
+
+insert into produto values (13,'Massa de Vedação','Quilo',4);
+
+insert into fornecedor values (1,'Informática Blumenau',1.235E+09,88301150,
+
+1,'Rua Itaiópolis',1,1,6534321,3230101,null,null,'Fernando','12/09/1975');
+
+insert into fornecedor values (2,'Armazém das Ferragens',65464,4654654,
+
+1,'Rua São Benedito',4,2,1234234,2228989,null,null,'Edenilsom Capestrim','12/01/1946');
+
+insert into fornecedor values (3,'Casas da Água',54654654,65465465,
+
+1,'Rua Capião Euclides de Castro',1,1,12112,1211212,null,null,'Jandira Aspertes','12/10/1973');
+
+insert into solicitacao_compra values (1,1,'12/01/1996','12/02/1996');
+
+insert into solicitacao_compra values (2,3,'12/12/1997','13/12/1997');
+
+insert into solicitacao_compra values (3,7,'12/01/1996','12/01/1997');
+
+insert into solicitacao_compra values (4,2,'01/04/1997','02/04/1997');
+
+insert into solicitacao_compraa values (6,3,'12/01/1996','12/01/1996');
+
+insert into pedido values (2,1,'12/01/1996','12/03/1997');
+
+insert into pedido values (3,2,'24/01/1997','30/01/1997');
+
+insert into pedido values (4,2,'12/01/1997','12/01/1997');
+
+insert into pedido values (5,3,'15/02/1997','20/02/1997');
+
+insert into pedido values (6,1,'12/09/1997','20/09/1997');
+
+insert into pedido values (7,2,'23/01/1997','24/01/1997');
+
+insert into pedido values (8,3,'15/01/1997','15/01/1997');
+
+insert into solicitacao_compra values (1,2,3);
+
+insert into solicitacao_compra values (1,3,2);
+
+insert into solicitacao_compra values (1,4,4);
+
+insert into solicitacao_compra values (2,2,2);
+
+insert into solicitacao_compra values (2,4,1);
+
+insert into solicitacao_compra values (2,6,5);
+
+insert into solicitacao_compra values (3,1,2);
+
+insert into solicitacao_compra values (3,5,1);
+
+insert into solicitacao_compra values (4,1,100);
+
+insert into solicitacao_compra values (4,2,1);
+
+insert into solicitacao_compra values (4,3,1);
+
+insert into solicitacao_compra values (4,4,1);
+
+insert into solicitacao_compra values (4,5,1);
+
+insert into solicitacao_compra values (4,6,10);
+
+insert into solicitacao_compra values (6,2,200);
+
+insert into item_pedido values (2,2,1,2,50.78);
+
+insert into item_pedido values (3,2,1,3,250.56);
+
+insert into item_pedido values (3,3,1,2,536.32);
+
+insert into item_pedido values (4,4,1,4,1050.23);
+
+insert into item_pedido values (4,3,1,3,78.23);
+
+insert into item_pedido values (4,2,1,4,12.33);
+
+insert into item_pedido values (5,2,2,2,545.12);
+
+insert into item_pedido values (5,4,2,2,256.66);
+
+insert into item_pedido values (5,6,2,6,89.2);
+
+insert into item_pedido values (6,1,3,2,88.26);
+
+insert into item_pedido values (6,5,3,2,257.12);
+
+insert into item_pedido values (7,1,4,150,78.15);
+
+insert into item_pedido values (7,2,4,2,4056.56);
+
+insert into item_pedido values (7,3,4,2,455.26);
+
+insert into item_pedido values (7,5,4,3,789.65);
+
+insert into item_pedido values (7,6,4,15,798.54);
+
+insert into item_pedido values (7,4,4,2,10.12);
+
+insert into item_pedido values (8,2,6,200,4998.23);
+
+INSERT INTO produto (cod_produto, dsc_produto, dsc_unidade, vlr_unit)
+VALUES (14, 'computador', 'pc', 10);
+
+select * from cod_produto;
+
+create table BD_EMP
+
+(
+
+  EMP_NUM INT(5),
+  EMP_NOME VARCHAR(255),
+  DEPTO_NUM INT(5),
+  CARGO_NUM INT(5),
+  EMP_DAT_ADMIS DATE,
+  EMP_VAL_SAL DECIMAL(10,2),
+  EMP_VAL_COMIS DECIMAL(10,2)
+
+  );
+
+create table CARGO
+
+(
+  CARGO_NUM INT(5),
+  CARGO_NOME VARCHAR(255),
+  CARGO_SUPER INT(5)
+
+);
+
+create table DEPTO
+
+(
+  DEPTO_NUM  INT(5),
+  DEPTO_NOME VARCHAR(255)
+
+);
+
+create table FAIXA_SAL
+
+(
+  FAIXA_DESC VARCHAR(255),
+  FAIXA_VAL_MIN DECIMAL(10,2),
+  FAIXA_VAL_MAX DECIMAL(10,2)
+
+);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (1, 'SIMONE', 1, 1, to_date('01-09-2010', 'dd-mm-yyyy'), 865, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (2, 'DEMIS', 2, 3, to_date('01-06-2010', 'dd-mm-yyyy'), 136500, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (4, 'WERNER', 3, 4, to_date('13-09-2010', 'dd-mm-yyyy'), 212700, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (5, 'FABIO', 4, 5, to_date('15-09-2010', 'dd-mm-yyyy'), 365400, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (6, 'ALEXANDRE', 5, 5, to_date('21-09-2010', 'dd-mm-yyyy'), 458645, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (7, 'JULIA', 4, 3, to_date('13-09-2010', 'dd-mm-yyyy'), 369800, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (8, 'ANGELA', 3, 8, to_date('22-09-2010', 'dd-mm-yyyy'), 85600, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (9, 'FERNANDA', 2, 10, to_date('01-05-2010', 'dd-mm-yyyy'), 52735, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (10, 'ODIRLEI', 6, 6, to_date('17-09-2010', 'dd-mm-yyyy'), 362100, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (11, 'RAMON', 7, 7, to_date('23-07-2010', 'dd-mm-yyyy'), 256400, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (12, 'RENATA', 8, 8, to_date('14-09-2010', 'dd-mm-yyyy'), 110000, null);
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (13, 'FRANCIELLE', 9, 11, to_date('13-09-2010', 'dd-mm-yyyy'), 163500, null);
+
+commit;
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (1, 'GERENTE GERAL', 2);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (2, 'DIRETOR', 3);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (3, 'PRESIDENTE', null);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (4, 'GERENTE FINANCEIRO', 2);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (5, 'GERENTE TI', 3);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (6, 'PROGRAMADOR', 5);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (7, 'ANALISTA SISTEMAS', 5);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (8, 'SECRETÁRIA', 7);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (10, 'SERVIÇOS GERAIS', 1);
+
+insert into CARGO (CARGO_NUM, CARGO_NOME, CARGO_SUPER)
+values (11, 'AUX ADMN', 1);
+
+commit;
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (1, 'RH');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (2, 'FINANCEIRO');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (3, 'TI');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (4, 'EXPORTAÇÃO');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (5, 'MARKETING');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (6, 'INFRA ESTRUT');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (7, 'NOVOS NEGÓCIOS');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (8, 'NOVOS PRODUTOS');
+
+insert into DEPTO (DEPTO_NUM, DEPTO_NOME)
+values (9, 'QUALIDADE');
+
+commit;
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('1', 50000, 99900);
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('2', 1000, 160100);
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('3', 1602, 250000);
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('4', 250100, 310000);
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('5', 310100, 408000);
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('6', 408100, 501000);
+
+insert into FAIXA_SAL (FAIXA_DESC, FAIXA_VAL_MIN, FAIXA_VAL_MAX)
+values ('7', 501100, 600000);
+
+commit;
+
+
+
+FETCH <nome cursor>
+
+INTO <lista variaveis>
+
+    Exemplo
+
+
+declare
+
+  aux_deptno dept.deptno%type;
+  aux_dname dept.dname%type;
+  cursor deptos is
+  select deptno,
+  dname from dept;
+
+begin
+
+  open deptos;
+  fetch deptos
+  into aux_deptno,
+  aux_dname;
+
+end;
+
+DECLARE CURSOR teste FOR SELECT statement;
+
+
+
+DECLARE CURSOR teste FOR
+SELECT * FROM dept;
+
+OPEN teste;
+
+FETCH NEXT FROM teste INTO @column1, @column2;
+
+UPDATE dept
+SET column1 = @column1, column2 = @column2
+WHERE id = @seta;
+
+CLOSE teste;
+
+DEALLOCATE teste;
+
+DECLARE
+  aux_deptno dept.deptno%type;
+  aux_dname depto.dname%type;
+  cursor depto is
+    select depto,
+           dname from depto;
+BEGIN
+  open depto;
+  fetch depto
+    into aux_depto,
+          aux_dname;
+END;
+
+
+
+
+
+
+
+
+DECLARE
+  CURSOR teste IS
+    SELECT EMP_NUM, FRANCIELLE
+    FROM BD_EMP;
+
+  EMP_NUM INT;
+  EMP_NOME VARCHAR(255);
+BEGIN
+  OPEN teste;
+
+  LOOP
+    FETCH teste INTO emp_num, emp_nome;
+    EXIT WHEN teste%NOTFOUND;
+
+    DBMS_OUTPUT.PUT_LINE ('Employee ID: ' || emp_num);
+    DBMS_OUTPUT.PUT_LINE ('Employee Name: ' || emp_nome);
+  END LOOP;
+
+  CLOSE teste;
+END;
+
+insert into BD_EMP (EMP_NUM, EMP_NOME, DEPTO_NUM, CARGO_NUM, EMP_DAT_ADMIS, EMP_VAL_SAL, EMP_VAL_COMIS)
+values (13, 'FRANCIELLE', 9, 11, to_date('13-09-2010', 'dd-mm-yyyy'), 163500, null);
+
+DECLARE
+  CURSOR teste IS
+    SELECT *
+    FROM BD_EMP;
+
+  EMP_NUM INT;
+  EMP_NOME VARCHAR(255);
+BEGIN
+  OPEN teste;
+
+  LOOP
+    FETCH teste INTO emp_num, emp_nome;
+    EXIT WHEN teste%NOTFOUND;
+
+    DBMS_OUTPUT.PUT_LINE ('Employee ID: ' || emp_num);
+    DBMS_OUTPUT.PUT_LINE ('Employee Name: ' || emp_nome);
+  END LOOP;
+
+  CLOSE teste;
+END;
+
+DECLARE
+  CURSOR BD_EMPE IS
+    SELECT *
+    FROM BD_EMP;
+
+  EMP_NUM INT;
+  EMP_NOME VARCHAR(255);
+BEGIN
+  OPEN teste;
+
+  LOOP
+    FETCH teste INTO EMP_NUM, EMP_NOME;
+    EXIT WHEN teste%NOTFOUND;
+
+    DBMS_OUTPUT.PUT_LINE('Employee ID: ' || EMP_NUM);
+    DBMS_OUTPUT.PUT_LINE('Employee Name: ' || EMP_NOME);
+  END LOOP;
+
+  CLOSE teste;
+END;
+
+
+
+
+
+CREATE OR REPLACE PACKAGE teams AS
+
+  PROCEDURE insert_team (name VARCHAR2, description VARCHAR2);
+
+  PROCEDURE print_teams;
+
+END teams;
+/
+
+CREATE OR REPLACE PACKAGE BODY teams AS
+
+  PROCEDURE insert_team (name VARCHAR2, description VARCHAR2) IS
+
+    BEGIN
+      INSERT INTO teams (name, description) VALUES (name, description);
+    END;
+
+  PROCEDURE print_teams IS
+
+    BEGIN
+      SELECT *
+      FROM teams
+      ORDER BY name;
+    END;
+
+END teams;
+/
+
+BEGIN
+  teams.insert_team ('New Team', 'This is a new team.');
+  teams.print_teams;
+END;
+/
+
+Team | Description
+------- | --------
+New Team | This is a new team.
+
+
+
+create table N3_FUNC(
+    COD_FUNC NUMBER(5) not null,
+    NOM_FUNC VARCHAR2(100) not null,
+    QTD_ANOS_SERV NUMBER(10),
+    VAL_SAL NUMBER(10,2));
+
+create table N3_FUNC_INTERM (COD_FUNC NUMBER(05) NOT NULL PRIMARY KEY,
+
+                                      NOM_FUNC VARCHAR2(100) NOT NULL,
+
+                                      QTD_ANOS_SERV  NUMBER(10),
+
+                                      VAL_SAL   NUMBER(10,2),
+
+DAT_ATUALZ  DATE,
+
+TIPO_OPER   VARCHAR2(01),
+
+NOM_USUAR   VARCHAR2(100));      
+
+
+
+
+CREATE TABLE N3_FUNC(
+    COD_FUNC INT(5) NOT NULL,
+    NOM_FUNC VARCHAR(255) NOT NULL,
+    QTD_ANOS_SERV INT(10),
+    VAL_SAL DECIMAL(10,2));
+
+CREATE TABLE N3_FUNC_INTERM (
+  COD_FUNC INT(5) NOT NULL PRIMARY KEY,
+  NOM_FUNC VARCHAR(255) NOT NULL,
+  QTD_ANOS_SERV DECIMAL(10),
+  VAL_SAL DECIMAL(10,2),
+  DAT_ATUALZ DATETIME,
+  TIPO_OPER CHAR(1),
+  NOM_USUAR VARCHAR(255)
+);  
+
+insert into N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+values (1, 'JOAO', 5, 10, '2010-10-19', 'M', 'PATO');
+
+insert into N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+values (2, 'MARIA', 4, 10, '2017-09-04', 'F', 'INTRIGUEIRA');
+
+insert into N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+values (3, 'KAKA', 3, 10, '2011-12-15', 'M', 'GAUCHO');
+
+insert into N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+values (4, 'BETO', 2, 10, '2004-06-13', 'M', 'TIO');
+
+insert into N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+values (5, 'JULIA', 1, 10, '2014-11-14', 'M', 'JUJUBA');
+
+
+
+CREATE TRIGGER trigger n3_func_interm
+AFTER INSERT OR UPDATE OR DELETE ON N3_FUNC
+FOR EACH ROW
+BEGIN
+
+  SET @current_date = CURRENT_DATE;
+  SET @current_time = CURRENT_TIME;
+
+  INSERT INTO N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+  VALUES (
+    COD_FUNC,
+    NOM_FUNC,
+    QTD_ANOS_SERV,
+    VAL_SAL,
+    @current_date,
+    CASE
+      WHEN INSERTED THEN 'I'
+      WHEN UPDATED THEN 'A'
+      WHEN DELETED THEN 'D'
+    END,
+  );
+
+END;
+
+
+CREATE TRIGGER tr_n3_func_interm_after_insert
+AFTER INSERT ON N3_FUNC_INTERM
+FOR EACH ROW
+BEGIN
+    INSERT INTO N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+    VALUES (NEW.COD_FUNC, NEW.NOM_FUNC, NEW.QTD_ANOS_SERV, NEW.VAL_SAL, NOW(), 'I', USER());
+END;
+
+
+
+CREATE TRIGGER tr_n3_func_interm_after_update
+AFTER UPDATE ON N3_FUNC_INTERM
+FOR EACH ROW
+BEGIN
+    INSERT INTO N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+    VALUES (NEW.COD_FUNC, NEW.NOM_FUNC, NEW.QTD_ANOS_SERV, NEW.VAL_SAL, NOW(), 'A', USER());
+END;
+
+
+CREATE TRIGGER tr_n3_func_interm_after_delete
+AFTER DELETE ON N3_FUNC_INTERM
+FOR EACH ROW
+BEGIN
+    INSERT INTO N3_FUNC_INTERM (COD_FUNC, NOM_FUNC, QTD_ANOS_SERV, VAL_SAL, DAT_ATUALZ, TIPO_OPER, NOM_USUAR)
+    VALUES (OLD.COD_FUNC, OLD.NOM_FUNC, OLD.QTD_ANOS_SERV, OLD.VAL_SAL, NOW(), 'D', USER());
+END;
+
+
+
+
+
+
+
+createorreplacetrigger n3_func_01
+
+beforeinsertorupdateordeleteon n3_func 
+
+foreachrow
+
+declare
+
+begin
+
+if inserting or updating then
+
+insertinto n3_func_interm values (:new.cod_func,
+
+:new.nom_fun,
+
+:new.qtd_anos_serv,
+
+:new.val_sal,
+
+SYSDATE,
+
+'I',
+
+'MEU_NOME');
+
+elsif updating then
+
+insertinto n3_func_interm values (:new.cod_func,
+
+:new.nom_fun,
+
+:new.qtd_anos_serv,
+
+:new.val_sal,
+
+SYSDATE,
+
+'A',
+
+'MEU_NOME');
+
+elsif deleting then
+
+insertinto n3_func_interm values (:old.cod_func,
+
+:old.nom_fun,
+
+:old.qtd_anos_serv,
+
+:old.val_sal,
+
+SYSDATE,
+
+'D',
+
+'MEU_NOME');
+
+endif;                                             
+
+end n3_func_01;
+
+
+
+CREATE OR REPLACE PROCEDURE aumentoSalarial
+(
+	p_faixa in FUNCIONARIOS.FAIXA_SALARIO%TYPE,
+	p_percentual in NUMBER
+)
+IS
+BEGIN
+    aumentoSalarial('valor_da_faixa', valor_do_percentual);
+END;
+
+Execute aumentoSalarial;
+
+CREATE TABLE FUNCIONARIOS (
+    COD CHAR(1) NOT NULL,
+    NOME VARCHAR(30) NOT NULL,
+    FAIXA_SALARIO INT(8) NOT NULL,
+    SALARIO INT(8) NOT NULL,
+    PRIMARY KEY (COD)
+);
+
+INSERT INTO FUNCIONARIOS (COD, NOME, FAIXA_SALARIO, SALARIO)
+VALUES (1, 'Aline', 1, 1000);
+INSERT INTO FUNCIONARIOS (COD, NOME, FAIXA_SALARIO, SALARIO)
+VALUES (2, 'Bernardo', 2, 2000);
+INSERT INTO FUNCIONARIOS (COD, NOME, FAIXA_SALARIO, SALARIO)
+VALUES (3, 'Botelho', 1, 500);
+INSERT INTO FUNCIONARIOS (COD, NOME, FAIXA_SALARIO, SALARIO)
+VALUES (4, 'Carlos', 3, 3000);
+
+
+CREATE PROCEDURE AplicarAumentoSalario(
+    IN faixa_salario_inicio DECIMAL(10, 2),
+    IN faixa_salario_fim DECIMAL(10, 2),
+    IN percentual_aumento DECIMAL(5, 2)
+)
+BEGIN
+    UPDATE funcionarios
+    SET salario = salario * (1 + percentual_aumento / 100)
+    WHERE salario BETWEEN faixa_salario_inicio AND faixa_salario_fim;
+END;
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE aumentar_salario
+(
+  p_faixa in FUNCIONARIOS.FAIXA_SALARIO%TYPE,
+  p_percentual in NUMBER
+)
+IS
+  v_salario_anterior NUMBER;
+  v_salario_novo NUMBER;
+BEGIN
+  FOR v_registro IN (
+    SELECT
+      F.COD,
+      F.NOME,
+      F.SALARIO
+    FROM
+      FUNCIONARIOS F
+    WHERE
+      F.FAIXA_SALARIO = p_faixa AND F.SALARIO > 0
+  ) LOOP
+    v_salario_anterior := v_registro.SALARIO;
+    v_salario_novo := v_salario_anterior * (1 + p_percentual / 100);
+    
+    UPDATE FUNCIONARIOS
+    SET SALARIO = v_salario_novo
+    WHERE COD = v_registro.I;
+  END LOOP;
+END;
+
+
+
+CREATE OR REPLACE PROCEDURE aumentoSalarial
+(
+	p_faixa IN FUNCIONARIOS.FAIXA_SALARIO%TYPE,
+	p_percentual IN FUNCIONARIOS.FAIXA_SALARIO
+)
+IS
+BEGIN
+    UPDATE funcionarios
+    SET salario = salario * (1 + percentual_aumento / 100)
+    WHERE salario BETWEEN faixa_salario_inicio AND faixa_salario_fim;
+END;
+END aumentoSalarial;
+
+
+
+
+CREATE OR REPLACE PROCEDURE aumentoSalarial
+(
+	p_faixa in FUNCIONARIOS.FAIXA_SALARIO%TYPE,
+	p_percentual in NUMBER
+)
+IS
+BEGIN
+    aumentoSalarial('valor_da_faixa', 'valor_do_percentual');
+END;
+
+Execute aumentoSalarial;
+
+
+
+
+CREATE OR REPLACE PROCEDURE aumentoSalarial
+
+(
+	p_faixa in FUNCIONARIOS.FAIXA_SALARIO%TYPE,
+	p_percentual in NUMBER
+)
+IS
+BEGIN
+	UPDATE FUNCIONARIOS F SET F.SALARIO = F.SALARIO * (1 + 10/100)
+	WHERE F.FAIXA_SALARIO = 1;
+END;
+END aumentoSalarial;
+
+Execute aumentoSalarial;
+
+
+
+*** ESSE DE BAIXO FUNCIONA ***
+
+CREATE PROCEDURE BuscaCurso
+	@nomeCurso VARCHAR(20)
+AS
+
+SET @NOMECURSO = '%' + @NomeCurso + '%';
+
+SELECT c.id_curso, c.nome_curso, a.nome, COALESCE(a.sexo,'NI') sexo
+	FROM Cursos C
+		INNER JOIN Turmas t on (t.id_turma = c.id_curso)
+		INNER JOIN AlunosxTurmas alt on (alt.id_turma = t.id_turma)
+		INNER JOIN Aunos a on (a.id_alubno = alt.id_aluno)
+	WHERE nome_curso like @NomeCurso;
+	
+exec BuscaCurso 'Powerpoint';
+exec BuscaCurso 'Excel';
+exec BuscaCurso '%';
+	
+*** FUNCIONA ***
+
+CREATE PROCEDURE IncluirNovoCurso
+	@NomeCurso VARCHAR(100),
+	@LoginCadastro VARCHAR(100)
+AS
+BEGIN
+	DECLARE @vIdCurso INT;
+
+	SET @vIdCurso = max(id_curso) + 1;
+
+	INSERT INTO cursos (id_curso, nome_curso, data_cadastro, login_cadastro)
+		VALUES (@vIdCurso, @NomeCurso, getdate(), @LoginCadastro);
+
+	SELECT @vIdCurso as retorno;
+
+END;
+
+exec IncluirNovoCurso 'VBA I', 'ATROVADO';
+
+select * from cursos order by id_curso desc;
+
+
+
